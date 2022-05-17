@@ -64,6 +64,6 @@ public class Person {
 
     public String toString()
     {
-        System.out.println("Name: " + name + "\n" + "Hobby: " + hobby);
+        return "Name: " + name + "\n" + "Hobby: " + hobby +"\n -----------------\n";
     }
 }

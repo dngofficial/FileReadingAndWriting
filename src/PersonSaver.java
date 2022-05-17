@@ -4,8 +4,11 @@ import java.util.Scanner;
 
 public class PersonSaver
 {
-    private ArrayList<Person> personList;
-    public PersonSaver() { }
+    private final ArrayList<Person> personList;
+    public PersonSaver()
+    {
+        personList = new ArrayList<>();
+    }
 
     public void load()
     {
@@ -14,7 +17,7 @@ public class PersonSaver
         // time running the program and it hasn't been created yet
         // (in which case, an exception is thrown and the "catch"
         // block is executed)
-        try {
+//        try {
 //            File f = new File("src/person.data");
 //            Scanner s = new Scanner(f); // a Scanner can be initialized with a File object (rather than System.in)
 //            int line = 1;
@@ -32,26 +35,26 @@ public class PersonSaver
 //                }
 //                line++;
 //            }
-//            s.close(); // close scanner
-
-            Person p =  new Person(name, hobby);
-            update(p);
-
-            System.out.println("Good bye!");
+////            s.close(); // close scanner
+//
+//            Person p =  new Person(name, hobby);
+//            update(p);
+//
+//            System.out.println("Good bye!");
         }
         // if the file doesn't exist, an Exception gets generated
         // and "thrown" and "caught" below; this calls the helper method
         // which creates a new Person object and asks them for
         // a name and hobby; when the person gets saved,
         // the file gets created (so the next time the program runs,
-        // the file exists and can be loaded!)
-        catch (FileNotFoundException e) {
-            System.out.println("file doesn't exist yet! exception message: " + e.getMessage());
-
-            // let's create a person and save to file so that it does exist
-            createPerson();
-        }
-    }
+//        // the file exists and can be loaded!)
+//        catch (FileNotFoundException e) {
+//            System.out.println("file doesn't exist yet! exception message: " + e.getMessage());
+//
+//            // let's create a person and save to file so that it does exist
+//            createPerson();
+//        }
+//    }
 
     // private helper method
     private void update(Person person) {
@@ -100,8 +103,8 @@ public class PersonSaver
         p.save();
     }
 
-    private void scanIntoList()
-    {
+        public void scanIntoList()
+        {
         try
         {
             FileReader fileReader = new FileReader("src/person.data");
@@ -151,6 +154,11 @@ public class PersonSaver
             }
         }
 
+    }
+
+    public void printWordList()
+    {
+        System.out.println(personList.toString());
     }
 
     }
