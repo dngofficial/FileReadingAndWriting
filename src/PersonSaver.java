@@ -109,7 +109,7 @@ public class PersonSaver
         {
             FileReader fileReader = new FileReader("src/person.data");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line = bufferedReader.readLine();
+            String line;
 
             while ((line = bufferedReader.readLine()) != null)
             {
@@ -144,7 +144,7 @@ public class PersonSaver
                 File f = new File("src/person.data");
                 f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
                 FileWriter fw = new FileWriter("src/person.data");
-                fw.write(personList.get(i).getName() + ",");
+                fw.write(personList.get(i).getName() + "|");
                 fw.write(personList.get(i).getHobby() + "\n");
                 fw.close();
             }

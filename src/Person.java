@@ -66,4 +66,6 @@ public class Person {
     {
         return "Name: " + name + "\n" + "Hobby: " + hobby +"\n -----------------\n";
     }
+
+    public
 }
