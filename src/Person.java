@@ -51,7 +51,7 @@ public class Person {
             File f = new File("src/person.data");
             f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
             FileWriter fw = new FileWriter("src/person.data");
-            fw.write(name + "\n");
+            fw.write(name + ",");
             fw.write(hobby);
             fw.close();
             System.out.println("Data saved!");
@@ -60,5 +60,10 @@ public class Person {
             System.out.println("Unable to create file");
             System.out.println(e.getMessage());
         }
+    }
+
+    public String toString()
+    {
+        System.out.println("Name: " + name + "\n" + "Hobby: " + hobby);
     }
 }

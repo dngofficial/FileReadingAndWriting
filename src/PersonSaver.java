@@ -1,9 +1,10 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PersonSaver
 {
+    private ArrayList<Person> personList;
     public PersonSaver() { }
 
     public void load()
@@ -14,24 +15,24 @@ public class PersonSaver
         // (in which case, an exception is thrown and the "catch"
         // block is executed)
         try {
-            File f = new File("src/person.data");
-            Scanner s = new Scanner(f); // a Scanner can be initialized with a File object (rather than System.in)
-            int line = 1;
-            String name = "";
-            String hobby = "";
-
-            // reading from the file line by line
-            while (s.hasNextLine()) {
-                String data = s.nextLine();
-                if (line == 1) {
-                    name = data;
-                }
-                if (line == 2) {
-                    hobby = data;
-                }
-                line++;
-            }
-            s.close(); // close scanner
+//            File f = new File("src/person.data");
+//            Scanner s = new Scanner(f); // a Scanner can be initialized with a File object (rather than System.in)
+//            int line = 1;
+//            String name = "";
+//            String hobby = "";
+//
+//            // reading from the file line by line
+//            while (s.hasNextLine()) {
+//                String data = s.nextLine();
+//                if (line == 1) {
+//                    name = data;
+//                }
+//                if (line == 2) {
+//                    hobby = data;
+//                }
+//                line++;
+//            }
+//            s.close(); // close scanner
 
             Person p =  new Person(name, hobby);
             update(p);
@@ -98,4 +99,59 @@ public class PersonSaver
         p.setHobby(hobby);
         p.save();
     }
-}
+
+    private void scanIntoList()
+    {
+        try
+        {
+            FileReader fileReader = new FileReader("src/person.data");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
+
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                // import all cells for a single row as an array of Strings,
+                // then convert to ints as needed
+                String[] peopleFromCSV = line.split(",");
+
+                // pull out the data for this cereal
+                String name = peopleFromCSV[0];
+                String hobby = peopleFromCSV[1];
+
+                // create Cereal object to store values
+                Person nextPerson = new Person(name, hobby);
+
+                // adding Cereal object to the arraylist
+                personList.add(nextPerson);
+            }
+            bufferedReader.close();
+        }
+        catch(IOException exception)
+        {
+            // Print out the exception that occurred
+            System.out.println("Unable to access " + exception.getMessage());
+        }
+    }
+
+    public void scanListIntoData()
+    {
+        for (int i =0; i < personList.size(); i++)
+        {
+            try {
+                File f = new File("src/person.data");
+                f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
+                FileWriter fw = new FileWriter("src/person.data");
+                fw.write(personList.get(i).getName() + ",");
+                fw.write(personList.get(i).getHobby() + "\n");
+                fw.close();
+            }
+            catch (IOException e) {
+                System.out.println("Unable to create file");
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
+    }
+
