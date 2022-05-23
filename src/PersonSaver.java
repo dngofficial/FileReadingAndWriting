@@ -2,16 +2,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class PersonSaver
-{
+public class PersonSaver {
     private final ArrayList<Person> personList;
-    public PersonSaver()
-    {
+
+    public PersonSaver() {
         personList = new ArrayList<>();
     }
 
-    public void load()
-    {
+    public void load() {
         // try loading data from the file "person.data";
         // if the file isn't found, that means this is the first
         // time running the program and it hasn't been created yet
@@ -41,12 +39,12 @@ public class PersonSaver
 //            update(p);
 //
 //            System.out.println("Good bye!");
-        }
-        // if the file doesn't exist, an Exception gets generated
-        // and "thrown" and "caught" below; this calls the helper method
-        // which creates a new Person object and asks them for
-        // a name and hobby; when the person gets saved,
-        // the file gets created (so the next time the program runs,
+    }
+    // if the file doesn't exist, an Exception gets generated
+    // and "thrown" and "caught" below; this calls the helper method
+    // which creates a new Person object and asks them for
+    // a name and hobby; when the person gets saved,
+    // the file gets created (so the next time the program runs,
 //        // the file exists and can be loaded!)
 //        catch (FileNotFoundException e) {
 //            System.out.println("file doesn't exist yet! exception message: " + e.getMessage());
@@ -78,10 +76,9 @@ public class PersonSaver
             String h = "";
             System.out.print("Enter your new hobby: ");
             h = s.nextLine();
-            person.setHobby(h);
+            person.setPassword(h);
         }
-        if (!option.equals("4"))
-        {
+        if (!option.equals("4")) {
             person.save();  // calls the save() method in the Person class which saves to file
         }
         s.close();
@@ -89,8 +86,7 @@ public class PersonSaver
 
     // private helper method; only called the first time
     // the program is run and the file doesn't yet exist
-    private void createPerson()
-    {
+    private void createPerson() {
         Person p = new Person();
         System.out.println(p.greet());
         System.out.print("What is your name? ");
@@ -99,56 +95,48 @@ public class PersonSaver
         System.out.print("What is your hobby? ");
         String hobby = in.nextLine();
         p.setName(name);
-        p.setHobby(hobby);
+        p.setPassword(hobby);
         p.save();
     }
 
-        public void scanIntoList()
-        {
-        try
-        {
+    public void scanIntoList() {
+        try {
             FileReader fileReader = new FileReader("src/person.data");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
 
-            while ((line = bufferedReader.readLine()) != null)
-            {
+            while ((line = bufferedReader.readLine()) != null) {
                 // import all cells for a single row as an array of Strings,
                 // then convert to ints as needed
                 String[] peopleFromCSV = line.split(",");
 
                 // pull out the data for this cereal
                 String name = peopleFromCSV[0];
-                String hobby = peopleFromCSV[1];
+                String password = peopleFromCSV[1];
 
                 // create Cereal object to store values
-                Person nextPerson = new Person(name, hobby);
+                Person nextPerson = new Person(name, password);
 
                 // adding Cereal object to the arraylist
                 personList.add(nextPerson);
             }
             bufferedReader.close();
-        }
-        catch(IOException exception)
-        {
+        } catch (IOException exception) {
             // Print out the exception that occurred
             System.out.println("Unable to access " + exception.getMessage());
         }
     }
 
-    public void scanListIntoData()
-    {
-        for (int i =0; i < personList.size(); i++)
-        {
+    public void scanListIntoData() {
+        for (int i = 0; i < personList.size(); i++) {
             try {
                 File f = new File("src/person.data");
                 f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
                 FileWriter fw = new FileWriter("src/person.data");
                 fw.write(personList.get(i).getName() + "|");
-                fw.write(personList.get(i).getHobby() + "\n");
+                fw.write(personList.get(i).getPassword() + "\n");
                 fw.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Unable to create file");
                 System.out.println(e.getMessage());
             }
@@ -156,10 +144,9 @@ public class PersonSaver
 
     }
 
-    public void printWordList()
-    {
+    public void printWordList() {
         System.out.println(personList.toString());
     }
+}
 
-    }
 

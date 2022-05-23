@@ -4,42 +4,42 @@ import java.io.File;
 
 public class Person {
     private String name;
-    private String hobby;
+    private String password;
 
     public Person() {
         name = "";
-        hobby = "";
+        password = "";
     }
 
     public Person(String name, String hobby) {
 
 
         this.name = name;
-        this.hobby = hobby;
+        this.password = hobby;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getHobby() {
-        return hobby;
+    public String getPassword() {
+        return password;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String greet() {
-        if (name.equals("") && hobby.equals("")) {
+        if (name.equals("") && password.equals("")) {
             return "Hello! Please introduce yourself!";
         }
         else {
-            return "Name: " + name + "\n" + "Hobby: " + hobby;
+            return "Name: " + name + "\n" + "Hobby: " + password;
         }
     }
 
@@ -52,7 +52,7 @@ public class Person {
             f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
             FileWriter fw = new FileWriter("src/person.data");
             fw.write(name + ",");
-            fw.write(hobby);
+            fw.write(password);
             fw.close();
             System.out.println("Data saved!");
         }
@@ -64,8 +64,8 @@ public class Person {
 
     public String toString()
     {
-        return "Name: " + name + "\n" + "Hobby: " + hobby +"\n -----------------\n";
+        return "Name: " + name + "\n" + "Password: " + password +"\n -----------------\n";
     }
 
-    public
+
 }

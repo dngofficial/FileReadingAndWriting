@@ -1,7 +1,6 @@
 public class PersonRunner {
     public static void main(String[] args) {
-        PersonSaver savedPerson = new PersonSaver();
-        savedPerson.scanIntoList();
-        savedPerson.printWordList();
+        PasswordGUI gui = new PasswordGUI();
+
     }
 }
