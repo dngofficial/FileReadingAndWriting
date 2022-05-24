@@ -144,6 +144,11 @@ public class PersonSaver {
 
     }
 
+    public ArrayList getPersonList()
+    {
+        return personList;
+    }
+
     public void printWordList() {
         System.out.println(personList.toString());
     }
