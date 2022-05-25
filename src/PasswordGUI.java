@@ -20,6 +20,10 @@ public class PasswordGUI implements ActionListener {
     private JButton submit;
     private JButton newAccount;
     private JFrame frame;
+    private JTextField usernameEntryField;
+    private JTextField passwordEntryField;
+
+
 
 
     public PasswordGUI() {
@@ -29,6 +33,8 @@ public class PasswordGUI implements ActionListener {
         logIn = new JLabel();
         personSaver = new PersonSaver();
         frame = new JFrame("PasswordSIM by Devan");
+
+
 
         setupGui();
 
@@ -40,7 +46,7 @@ public class PasswordGUI implements ActionListener {
     private void setupGui() {
         //Creating a Frame
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // ends program when you hit the X
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// ends program when you hit the X
 
         JLabel welcomeLabel = new JLabel("PasswordSIM©");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 70));
@@ -67,14 +73,14 @@ public class PasswordGUI implements ActionListener {
         //middle panel with text field username
         JPanel entryPanelUser = new JPanel(); // the panel is not visible in output
         username = new JLabel("Username: ");
-        JTextField usernameEntryField = new JTextField(20); // accepts up to 20 characters
+         usernameEntryField = new JTextField(20); // accepts up to 20 characters
         entryPanelUser.add(username);
         entryPanelUser.add(usernameEntryField);
 
         //middle panel with text field password
         JPanel entryPanelPassword = new JPanel();
         password = new JLabel("Password: ");
-        JTextField passwordEntryField = new JTextField(20); // accepts up to 20 characters
+         passwordEntryField = new JTextField(20); // accepts up to 20 characters
         entryPanelPassword.add(password);
         entryPanelPassword.add(passwordEntryField);
 
@@ -124,6 +130,8 @@ public class PasswordGUI implements ActionListener {
 
     public void changeToCreateAccount() {
 
+        passwordEntryField.setText("");
+        usernameEntryField.setText("");
         feedback.setText("feedback here");
         username.setText("Create username (max 20 characters): ");
         password.setText("Create password (max 20 characters): ");
@@ -138,6 +146,8 @@ public class PasswordGUI implements ActionListener {
 
     public void changeToAccountEditor() {
 
+        passwordEntryField.setText("");
+        usernameEntryField.setText("");
         feedback.setText("feedback here");
         username.setText("Change current username (max 20 characters): ");
         password.setText("Create current password (max 20 characters): ");
@@ -153,6 +163,8 @@ public class PasswordGUI implements ActionListener {
 
     public void changeToLogIn() {
 
+        passwordEntryField.setText("");
+        usernameEntryField.setText("");
         feedback.setText("Feedback");
         username.setText("Username: ");
         password.setText("Password: ");
@@ -162,6 +174,7 @@ public class PasswordGUI implements ActionListener {
         frame.setVisible(false);
         frame.pack();
         frame.setVisible(true);
+
 
 
     }
@@ -179,14 +192,34 @@ public class PasswordGUI implements ActionListener {
         }
         else if(text.equals("Log In"))
         {
+
             changeToAccountEditor();
+        }
+        else if(text.equals("Create Account"))
+        {
+             System.out.println("1");
+            String name = usernameEntryField.getText();
+            String password = passwordEntryField.getText();
+            if(personSaver.findIdxOfNameInPersonList(name) ==  -1)
+            {
+                personSaver.addNewAccount(name, password);
+                feedback.setText("New Account Created! Click back or create another account!");
+                System.out.println("2");
+            }
+            else
+            {
+                feedback.setText("Account already exists with that name.");
+            }
         }
 
         else if (text.equals("Back") || text.equals("Log Out"))
         {
+            System.out.println("1");
             changeToLogIn();
 
         }
+
+
     }
 //
 //    private void updateDisplayPanel(String text) {
@@ -227,8 +260,8 @@ public class PasswordGUI implements ActionListener {
 //            System.out.println("image no works");
 //        }
 //
-//
 //    }
 //
 //
+
 }

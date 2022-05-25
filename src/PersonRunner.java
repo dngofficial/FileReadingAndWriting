@@ -1,6 +1,9 @@
 public class PersonRunner {
     public static void main(String[] args) {
-        PasswordGUI gui = new PasswordGUI();
+        PersonSaver personSaver = new PersonSaver();
+        personSaver.printWordList();
+        personSaver.addNewAccount("devan", "ng");
+        personSaver.scanListIntoData();
 
 
     }

@@ -7,52 +7,12 @@ public class PersonSaver {
 
     public PersonSaver() {
         personList = new ArrayList<>();
+        scanDataIntoList();
     }
 
-    public void load() {
-        // try loading data from the file "person.data";
-        // if the file isn't found, that means this is the first
-        // time running the program and it hasn't been created yet
-        // (in which case, an exception is thrown and the "catch"
-        // block is executed)
-//        try {
-//            File f = new File("src/person.data");
-//            Scanner s = new Scanner(f); // a Scanner can be initialized with a File object (rather than System.in)
-//            int line = 1;
-//            String name = "";
-//            String hobby = "";
-//
-//            // reading from the file line by line
-//            while (s.hasNextLine()) {
-//                String data = s.nextLine();
-//                if (line == 1) {
-//                    name = data;
-//                }
-//                if (line == 2) {
-//                    hobby = data;
-//                }
-//                line++;
-//            }
-////            s.close(); // close scanner
-//
-//            Person p =  new Person(name, hobby);
-//            update(p);
-//
-//            System.out.println("Good bye!");
-    }
-    // if the file doesn't exist, an Exception gets generated
-    // and "thrown" and "caught" below; this calls the helper method
-    // which creates a new Person object and asks them for
-    // a name and hobby; when the person gets saved,
-    // the file gets created (so the next time the program runs,
-//        // the file exists and can be loaded!)
-//        catch (FileNotFoundException e) {
-//            System.out.println("file doesn't exist yet! exception message: " + e.getMessage());
-//
-//            // let's create a person and save to file so that it does exist
-//            createPerson();
-//        }
-//    }
+    public void load()
+    {
+            }
 
     // private helper method
     private void update(Person person) {
@@ -99,8 +59,10 @@ public class PersonSaver {
         p.save();
     }
 
-    public void scanIntoList() {
+    public void scanDataIntoList() {
         try {
+
+
             FileReader fileReader = new FileReader("src/person.data");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
@@ -128,18 +90,21 @@ public class PersonSaver {
     }
 
     public void scanListIntoData() {
-        for (int i = 0; i < personList.size(); i++) {
+        int counter = 1;
+        for (Person person : personList) {
             try {
+                System.out.print(counter);
                 File f = new File("src/person.data");
                 f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
-                FileWriter fw = new FileWriter("src/person.data");
-                fw.write(personList.get(i).getName() + "|");
-                fw.write(personList.get(i).getPassword() + "\n");
+                FileWriter fw = new FileWriter(f.getAbsoluteFile(),true);
+                fw.write(person.getName() + ",");
+                fw.write(person.getPassword() + "\n");
                 fw.close();
             } catch (IOException e) {
                 System.out.println("Unable to create file");
                 System.out.println(e.getMessage());
             }
+            counter++;
         }
 
     }
@@ -148,8 +113,53 @@ public class PersonSaver {
     {
         return personList;
     }
+    
+    public int findIdxOfNameInPersonList(String name)
+    {
+        for (int i = 0; i < personList.size(); i++)
+        {
+            if(personList.get(i).getName().equals(name))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void changeNameOfUserInList(int idx, String newName)
+    {
+        personList.get(idx).setName(newName);
+        scanListIntoData();
+    }
+
+    public void changePasswordOfUserInList(int idx, String newPass)
+    {
+        personList.get(idx).setPassword(newPass);
+        scanListIntoData();
+    }
+
+    public boolean checkIfValidAccount(String name, String password)
+    {
+        for (int i = 0; i < personList.size(); i++)
+        {
+            if(personList.get(i).getName().equals(name) || personList.get(i).getPassword().equals(password))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addNewAccount(String name, String password)
+    {
+        personList.add(new Person(name, password));
+        printWordList();
+        scanListIntoData();
+    }
+
 
     public void printWordList() {
+        System.out.println(personList.size());
         System.out.println(personList.toString());
     }
 }
