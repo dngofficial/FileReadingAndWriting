@@ -219,10 +219,16 @@ public class PasswordGUI implements ActionListener {
 
         } else if (text.equals("Delete Account"))
         {
+
             personSaver.removeAccount(currentIDxLogIn);
            changeToLogIn();
+            feedback.setText("Account successfully deleted.");
+            frame.setVisible(false);
+            frame.pack();
+            frame.setVisible(true);
 
-    }
+
+        }
 
 }
 
