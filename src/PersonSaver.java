@@ -160,7 +160,7 @@ public class PersonSaver {
     {
         for (int i = 0; i < personList.size(); i++)
         {
-            if(personList.get(i).getName().equals(name) || personList.get(i).getPassword().equals(password))
+            if(personList.get(i).getName().equals(name) && personList.get(i).getPassword().equals(password))
             {
                 return true;
             }
@@ -172,6 +172,22 @@ public class PersonSaver {
     {
         personList.add(new Person(name, password));
         printWordList();
+        scanListIntoData();
+    }
+
+    public String returnNameInList(int idx)
+    {
+        return personList.get(idx).getName();
+    }
+
+    public String returnPasswordInList(int idx)
+    {
+        return personList.get(idx).getPassword();
+    }
+
+    public void removeAccount(int idx)
+    {
+        personList.remove(idx);
         scanListIntoData();
     }
 

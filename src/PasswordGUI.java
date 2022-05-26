@@ -22,8 +22,9 @@ public class PasswordGUI implements ActionListener {
     private JFrame frame;
     private JTextField usernameEntryField;
     private JTextField passwordEntryField;
-
-
+    private JButton changeUsernameButton;
+    private JButton changePasswordButton;
+    private int currentIDxLogIn;
 
 
     public PasswordGUI() {
@@ -33,10 +34,12 @@ public class PasswordGUI implements ActionListener {
         logIn = new JLabel();
         personSaver = new PersonSaver();
         frame = new JFrame("PasswordSIM by Devan");
-
+        currentIDxLogIn = -1;
 
 
         setupGui();
+        changeToLogIn();
+
 
     }
 
@@ -73,17 +76,23 @@ public class PasswordGUI implements ActionListener {
         //middle panel with text field username
         JPanel entryPanelUser = new JPanel(); // the panel is not visible in output
         username = new JLabel("Username: ");
-         usernameEntryField = new JTextField(20); // accepts up to 20 characters
+        usernameEntryField = new JTextField(20); // accepts up to 20 characters
+        changeUsernameButton = new JButton("Change Username");
         entryPanelUser.add(username);
         entryPanelUser.add(usernameEntryField);
+        entryPanelUser.add(changeUsernameButton);
+//        changeUsernameButton.setVisible(false);
+
 
         //middle panel with text field password
         JPanel entryPanelPassword = new JPanel();
         password = new JLabel("Password: ");
-         passwordEntryField = new JTextField(20); // accepts up to 20 characters
+        passwordEntryField = new JTextField(20); // accepts up to 20 characters
+        changePasswordButton = new JButton("Change Password");
         entryPanelPassword.add(password);
         entryPanelPassword.add(passwordEntryField);
-
+        entryPanelPassword.add(changePasswordButton);
+//        changePasswordButton.setVisible(false);
         //middle panel
 
         feedback = new JLabel("");
@@ -119,6 +128,8 @@ public class PasswordGUI implements ActionListener {
 //        setting up buttons to use ActionListener interface and actionPerformed method
         submit.addActionListener(this);
         newAccount.addActionListener(this);
+        changeUsernameButton.addActionListener(this);
+        changePasswordButton.addActionListener(this);
 
 
         // showing the frame
@@ -138,6 +149,8 @@ public class PasswordGUI implements ActionListener {
         logIn.setText("Create a new account");
         submit.setText("Create Account");
         newAccount.setText("Back");
+        changePasswordButton.setVisible(false);
+        changeUsernameButton.setVisible(false);
         frame.setVisible(false);
         frame.pack();
         frame.setVisible(true);
@@ -146,14 +159,17 @@ public class PasswordGUI implements ActionListener {
 
     public void changeToAccountEditor() {
 
+
         passwordEntryField.setText("");
         usernameEntryField.setText("");
-        feedback.setText("feedback here");
+        feedback.setText("");
         username.setText("Change current username (max 20 characters): ");
         password.setText("Create current password (max 20 characters): ");
+        changeUsernameButton.setVisible(true);
+        changePasswordButton.setVisible(true);
         logIn.setText("Change an account's info");
-        submit.setText("Change Account");
-        newAccount.setText("Log Out");
+        submit.setText("Log Out");
+        newAccount.setText("Delete Account");
         frame.setVisible(false);
         frame.pack();
         frame.setVisible(true);
@@ -165,16 +181,17 @@ public class PasswordGUI implements ActionListener {
 
         passwordEntryField.setText("");
         usernameEntryField.setText("");
-        feedback.setText("Feedback");
+        feedback.setText("");
         username.setText("Username: ");
         password.setText("Password: ");
         logIn.setText("Enter username and password");
         submit.setText("Log In");
         newAccount.setText("Create New Account");
+        changePasswordButton.setVisible(false);
+        changeUsernameButton.setVisible(false);
         frame.setVisible(false);
         frame.pack();
         frame.setVisible(true);
-
 
 
     }
@@ -184,58 +201,107 @@ public class PasswordGUI implements ActionListener {
         JButton button = (JButton) (e.getSource());  // cast source to JButton
         String text = button.getText();
 
-        if (text.equals("Create New Account"))
-        {
+        if (text.equals("Create New Account")) {
 
             changeToCreateAccount();
 
-        }
-        else if(text.equals("Log In"))
-        {
-            if(personSaver.checkIfValidAccount(usernameEntryField.getText(), passwordEntryField.getText())) {
-                changeToAccountEditor();
-            }
-            else
-            {
-                feedback.setText("Account not found.");
-            }
-        }
-        else if(text.equals("Create Account"))
-        {
+        } else if (text.equals("Log In")) {
+            verifyLogIn();
+        } else if (text.equals("Create Account")) {
             accountCreationLogic();
-        }
+        } else if (text.equals("Change Password")) {
+            changePassword();
+        } else if (text.equals("Change Username")) {
+            changeUsername();
+        } else if (text.equals("Back") || text.equals("Log Out")) {
 
-        else if (text.equals("Back") || text.equals("Log Out"))
-        {
-            System.out.println("1");
             changeToLogIn();
 
+        } else if (text.equals("Delete Account"))
+        {
+            personSaver.removeAccount(currentIDxLogIn);
+           changeToLogIn();
+
+    }
+
+}
+
+        private void accountCreationLogic ()
+        {
+            String name = usernameEntryField.getText();
+            String password = passwordEntryField.getText();
+
+
+            if (name.contains(" ") || password.contains(" ") || password.equals("") || name.equals("")) {
+                feedback.setText("You sure everything is properly filled in?");
+
+            } else if (personSaver.findIdxOfNameInPersonList(name) == -1) {
+                personSaver.addNewAccount(name, password);
+                feedback.setText("New Account Created! Click back or create another account!");
+            } else {
+                feedback.setText("An account already exists with that name!");
+            }
+
+            frame.setVisible(false);
+            frame.pack();
+            frame.setVisible(true);
+        }
+
+        private void verifyLogIn ()
+        {
+            if (personSaver.checkIfValidAccount(usernameEntryField.getText(), passwordEntryField.getText())) {
+                currentIDxLogIn = personSaver.findIdxOfNameInPersonList(usernameEntryField.getText());
+                System.out.println("current account idx: " + currentIDxLogIn);
+                changeToAccountEditor();
+
+            } else if (!personSaver.checkIfValidAccount(usernameEntryField.getText(), passwordEntryField.getText()) && personSaver.findIdxOfNameInPersonList(usernameEntryField.getText()) != -1) {
+                feedback.setText("Incorrect log in details.");
+            } else {
+                feedback.setText("Account not found.");
+            }
+            frame.setVisible(false);
+            frame.pack();
+            frame.setVisible(true);
+        }
+
+        private void changeUsername()
+        {
+            String name = usernameEntryField.getText();
+
+            if (name.contains(" ") || name.equals("")) {
+                feedback.setText("You sure everything is properly filled in?");
+
+            } else if (personSaver.findIdxOfNameInPersonList(name) == -1 && !personSaver.returnNameInList(currentIDxLogIn).equals(name)) {
+                personSaver.changeNameOfUserInList(currentIDxLogIn, name);
+                feedback.setText("Username updated!");
+            } else {
+                feedback.setText("Account name taken already.");
+            }
+
+            frame.setVisible(false);
+            frame.pack();
+            frame.setVisible(true);
+        }
+
+        private void changePassword()
+        {
+            String password = passwordEntryField.getText();
+
+            if (password.contains(" ") || password.equals("")) {
+                feedback.setText("You sure everything is properly filled in?");
+
+            } else if (!personSaver.returnPasswordInList(currentIDxLogIn).equals(password)) {
+                personSaver.changePasswordOfUserInList(currentIDxLogIn, password);
+                feedback.setText("Password updated!");
+            } else {
+                feedback.setText("That's the same password as before!");
+            }
+
+            frame.setVisible(false);
+            frame.pack();
+            frame.setVisible(true);
         }
 
 
-    }
-private void accountCreationLogic()
-{
-    String name = usernameEntryField.getText();
-    String password = passwordEntryField.getText();
-    System.out.println("name: "  + name);
-    System.out.println("password: "  + password);
-
-
-    if(name.contains(" ") || password.contains(" ") || password.equals("") || name.equals(""))
-    {
-        feedback.setText("You sure everything is properly filled in?");
-
-    }
-    else if(personSaver.findIdxOfNameInPersonList(name) == -1)
-    {
-        personSaver.addNewAccount(name, password);
-        feedback.setText("New Account Created! Click back or create another account!");
-    }
-    else
-    {
-        feedback.setText("An account already exists with that name!");
-    }
-}
 
 }
