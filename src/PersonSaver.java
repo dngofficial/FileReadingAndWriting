@@ -4,10 +4,13 @@ import java.util.Scanner;
 
 public class PersonSaver {
     private final ArrayList<Person> personList;
+    File f;
 
     public PersonSaver() {
         personList = new ArrayList<>();
+         f = new File("src/person.data");
         scanDataIntoList();
+
     }
 
     public void load()
@@ -63,7 +66,7 @@ public class PersonSaver {
         try {
 
 
-            FileReader fileReader = new FileReader("src/person.data");
+            FileReader fileReader = new FileReader(f);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
 
@@ -91,20 +94,35 @@ public class PersonSaver {
 
     public void scanListIntoData() {
         int counter = 1;
+        try {
+            f.createNewFile();
+            FileWriter fw = new FileWriter(f);
+            fw.write("");
+            fw.close();
+        }
+        catch (IOException e){
+            System.out.println("Unable to create file");
+            System.out.println(e.getMessage());
+        }
+
+
+
         for (Person person : personList) {
             try {
                 System.out.print(counter);
-                File f = new File("src/person.data");
+
                 f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
-                FileWriter fw = new FileWriter(f.getAbsoluteFile(),true);
+                FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
                 fw.write(person.getName() + ",");
                 fw.write(person.getPassword() + "\n");
                 fw.close();
+
             } catch (IOException e) {
                 System.out.println("Unable to create file");
                 System.out.println(e.getMessage());
             }
             counter++;
+
         }
 
     }

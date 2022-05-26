@@ -86,7 +86,7 @@ public class PasswordGUI implements ActionListener {
 
         //middle panel
 
-        feedback = new JLabel("Feedback");
+        feedback = new JLabel("");
 
 
         //bottom panel
@@ -132,7 +132,7 @@ public class PasswordGUI implements ActionListener {
 
         passwordEntryField.setText("");
         usernameEntryField.setText("");
-        feedback.setText("feedback here");
+        feedback.setText("");
         username.setText("Create username (max 20 characters): ");
         password.setText("Create password (max 20 characters): ");
         logIn.setText("Create a new account");
@@ -168,7 +168,7 @@ public class PasswordGUI implements ActionListener {
         feedback.setText("Feedback");
         username.setText("Username: ");
         password.setText("Password: ");
-        logIn.setText("Create a new account");
+        logIn.setText("Enter username and password");
         submit.setText("Log In");
         newAccount.setText("Create New Account");
         frame.setVisible(false);
@@ -192,24 +192,17 @@ public class PasswordGUI implements ActionListener {
         }
         else if(text.equals("Log In"))
         {
-
-            changeToAccountEditor();
-        }
-        else if(text.equals("Create Account"))
-        {
-             System.out.println("1");
-            String name = usernameEntryField.getText();
-            String password = passwordEntryField.getText();
-            if(personSaver.findIdxOfNameInPersonList(name) ==  -1)
-            {
-                personSaver.addNewAccount(name, password);
-                feedback.setText("New Account Created! Click back or create another account!");
-                System.out.println("2");
+            if(personSaver.checkIfValidAccount(usernameEntryField.getText(), passwordEntryField.getText())) {
+                changeToAccountEditor();
             }
             else
             {
-                feedback.setText("Account already exists with that name.");
+                feedback.setText("Account not found.");
             }
+        }
+        else if(text.equals("Create Account"))
+        {
+            accountCreationLogic();
         }
 
         else if (text.equals("Back") || text.equals("Log Out"))
@@ -221,47 +214,28 @@ public class PasswordGUI implements ActionListener {
 
 
     }
-//
-//    private void updateDisplayPanel(String text) {
-//
-//
-//        WeatherNetworking api = new WeatherNetworking();
-//        currentWeather = api.parseCurrent(api.makeAPICallForForecast(text));
-//        double currentF = currentWeather.getCurrentF();
-//        double currentC = currentWeather.getCurrentC();
-//        String filePath = currentWeather.getFilePath();
-//        String condition1 = currentWeather.getCondition();
-//
-//
-//        System.out.println(checkbox.isSelected());
-//
-//
-//        if (checkbox.isSelected())
-//        {
-//            temperature.setText("Temperature: " + currentC + " C°");
-//        }
-//        else
-//        {
-//            temperature.setText("Temperature: " + currentF + " F°");
-//        }
-//
-//        condition.setText("Condition: " + condition1);
-//
-//        try {
-//
-//            URL imageURL = new URL("https:" + filePath);
-//            BufferedImage image = ImageIO.read(imageURL);
-//            ImageIcon icon = new ImageIcon(image);
-//            pictureLabel.setIcon(icon);
-//
-//        }
-//        catch (IOException e)
-//        {
-//            System.out.println("image no works");
-//        }
-//
-//    }
-//
-//
+private void accountCreationLogic()
+{
+    String name = usernameEntryField.getText();
+    String password = passwordEntryField.getText();
+    System.out.println("name: "  + name);
+    System.out.println("password: "  + password);
+
+
+    if(name.contains(" ") || password.contains(" ") || password.equals("") || name.equals(""))
+    {
+        feedback.setText("You sure everything is properly filled in?");
+
+    }
+    else if(personSaver.findIdxOfNameInPersonList(name) == -1)
+    {
+        personSaver.addNewAccount(name, password);
+        feedback.setText("New Account Created! Click back or create another account!");
+    }
+    else
+    {
+        feedback.setText("An account already exists with that name!");
+    }
+}
 
 }
