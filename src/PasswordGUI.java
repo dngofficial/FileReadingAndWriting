@@ -19,12 +19,13 @@ public class PasswordGUI implements ActionListener {
     private final PersonSaver personSaver;
     private JButton submit;
     private JButton newAccount;
-    private JFrame frame;
+    private final JFrame frame;
     private JTextField usernameEntryField;
     private JTextField passwordEntryField;
     private JButton changeUsernameButton;
     private JButton changePasswordButton;
     private int currentIDxLogIn;
+    private JLabel namePanel;
 
 
     public PasswordGUI() {
@@ -53,12 +54,17 @@ public class PasswordGUI implements ActionListener {
 
         JLabel welcomeLabel = new JLabel("PasswordSIM©");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 70));
-        welcomeLabel.setForeground(Color.darkGray);
+        welcomeLabel.setForeground(Color.gray);
+
 
 
         logIn = new JLabel("Enter Username and password");
         logIn.setFont(new Font("Arial", Font.BOLD, 30));
-        logIn.setBackground(Color.lightGray);
+        logIn.setForeground(Color.lightGray);
+
+        namePanel = new JLabel("");
+        namePanel.setFont(new Font("Arial", Font.BOLD, 50));
+        namePanel.setForeground(Color.darkGray);
 
 
         //top panel
@@ -71,6 +77,9 @@ public class PasswordGUI implements ActionListener {
         topPanel.add(welcomeLabel, topC);
         topC.gridx = 0;
         topC.gridy = 2;
+        topPanel.add(namePanel, topC);
+        topC.gridx = 0;
+        topC.gridy = 3;
         topPanel.add(logIn, topC);
 
         //middle panel with text field username
@@ -144,8 +153,8 @@ public class PasswordGUI implements ActionListener {
         passwordEntryField.setText("");
         usernameEntryField.setText("");
         feedback.setText("");
-        username.setText("Create username (max 20 characters): ");
-        password.setText("Create password (max 20 characters): ");
+        username.setText("Create username (NO CHARACTER LIMIT): ");
+        password.setText("Create password (NO CHARACTER LIMIT): ");
         logIn.setText("Create a new account");
         submit.setText("Create Account");
         newAccount.setText("Back");
@@ -163,11 +172,12 @@ public class PasswordGUI implements ActionListener {
         passwordEntryField.setText("");
         usernameEntryField.setText("");
         feedback.setText("");
-        username.setText("Change current username (max 20 characters): ");
-        password.setText("Create current password (max 20 characters): ");
+        username.setText("Change current username (NO CHARACTER LIMIT)");
+        password.setText("Create current password (NO CHARACTER LIMIT): ");
+        namePanel.setText("Welcome: " + personSaver.returnNameInList(currentIDxLogIn));
         changeUsernameButton.setVisible(true);
         changePasswordButton.setVisible(true);
-        logIn.setText("Change an account's info");
+        logIn.setText("Change an account's info:");
         submit.setText("Log Out");
         newAccount.setText("Delete Account");
         frame.setVisible(false);
@@ -182,6 +192,7 @@ public class PasswordGUI implements ActionListener {
         passwordEntryField.setText("");
         usernameEntryField.setText("");
         feedback.setText("");
+        namePanel.setText("");
         username.setText("Username: ");
         password.setText("Password: ");
         logIn.setText("Enter username and password");
@@ -239,11 +250,12 @@ public class PasswordGUI implements ActionListener {
 
 
             if (name.contains(" ") || password.contains(" ") || password.equals("") || name.equals("")) {
-                feedback.setText("You sure everything is properly filled in?");
+                feedback.setText("You sure everything is properly filled in? (No spaces allowed)");
 
             } else if (personSaver.findIdxOfNameInPersonList(name) == -1) {
                 personSaver.addNewAccount(name, password);
-                feedback.setText("New Account Created! Click back or create another account!");
+                changeToLogIn();
+                feedback.setText("New Account Created! Log in or create another account!");
             } else {
                 feedback.setText("An account already exists with that name!");
             }
@@ -275,11 +287,13 @@ public class PasswordGUI implements ActionListener {
             String name = usernameEntryField.getText();
 
             if (name.contains(" ") || name.equals("")) {
-                feedback.setText("You sure everything is properly filled in?");
+                feedback.setText("You sure everything is properly filled in? (No spaces allowed)");
 
             } else if (personSaver.findIdxOfNameInPersonList(name) == -1 && !personSaver.returnNameInList(currentIDxLogIn).equals(name)) {
                 personSaver.changeNameOfUserInList(currentIDxLogIn, name);
                 feedback.setText("Username updated!");
+                namePanel.setText("Welcome: " + personSaver.returnNameInList(currentIDxLogIn));
+
             } else {
                 feedback.setText("Account name taken already.");
             }
@@ -294,7 +308,7 @@ public class PasswordGUI implements ActionListener {
             String password = passwordEntryField.getText();
 
             if (password.contains(" ") || password.equals("")) {
-                feedback.setText("You sure everything is properly filled in?");
+                feedback.setText("You sure everything is properly filled in? (No spaces allowed)");
 
             } else if (!personSaver.returnPasswordInList(currentIDxLogIn).equals(password)) {
                 personSaver.changePasswordOfUserInList(currentIDxLogIn, password);

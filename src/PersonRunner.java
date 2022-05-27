@@ -1,7 +1,6 @@
 public class PersonRunner {
     public static void main(String[] args) {
-
-        System.out.println("nooo".equals("no"));
+        //note if program is not working try deleting all the usernames/passwords in person.data
        PasswordGUI gui = new PasswordGUI();
 
 

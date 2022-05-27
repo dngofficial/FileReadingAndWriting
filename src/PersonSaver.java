@@ -13,54 +13,8 @@ public class PersonSaver {
 
     }
 
-    public void load()
-    {
-            }
 
     // private helper method
-    private void update(Person person) {
-        System.out.println(person.greet());
-        System.out.println("Would you like to update any information? Select an option");
-        System.out.println("1: Change my name");
-        System.out.println("2: Change my hobby");
-        System.out.println("3: Change both hobby and name");
-        System.out.println("4: Exit");
-        Scanner s = new Scanner(System.in);
-        System.out.print("Enter your option: ");
-        String option = s.nextLine();
-
-        if (option.equals("1") || option.equals("3")) {
-            String n = "";
-            System.out.print("Enter your new name: ");
-            n = s.nextLine();
-            person.setName(n);
-        }
-        if (option.equals("2") || option.equals("3")) {
-            String h = "";
-            System.out.print("Enter your new hobby: ");
-            h = s.nextLine();
-            person.setPassword(h);
-        }
-        if (!option.equals("4")) {
-            person.save();  // calls the save() method in the Person class which saves to file
-        }
-        s.close();
-    }
-
-    // private helper method; only called the first time
-    // the program is run and the file doesn't yet exist
-    private void createPerson() {
-        Person p = new Person();
-        System.out.println(p.greet());
-        System.out.print("What is your name? ");
-        Scanner in = new Scanner(System.in);
-        String name = in.nextLine();
-        System.out.print("What is your hobby? ");
-        String hobby = in.nextLine();
-        p.setName(name);
-        p.setPassword(hobby);
-        p.save();
-    }
 
     public void scanDataIntoList() {
         try {
@@ -93,7 +47,6 @@ public class PersonSaver {
     }
 
     public void scanListIntoData() {
-        int counter = 1;
         try {
             f.createNewFile();
             FileWriter fw = new FileWriter(f);
@@ -109,7 +62,6 @@ public class PersonSaver {
 
         for (Person person : personList) {
             try {
-                System.out.print(counter);
 
                 f.createNewFile(); // this method will create the file if it does not exist; if it does exist, it does nothing
                 FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
@@ -121,7 +73,6 @@ public class PersonSaver {
                 System.out.println("Unable to create file");
                 System.out.println(e.getMessage());
             }
-            counter++;
 
         }
 
@@ -171,7 +122,6 @@ public class PersonSaver {
     public void addNewAccount(String name, String password)
     {
         personList.add(new Person(name, password));
-        printWordList();
         scanListIntoData();
     }
 
