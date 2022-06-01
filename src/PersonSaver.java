@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class PersonSaver {
     private final ArrayList<Person> personList;
@@ -14,7 +13,6 @@ public class PersonSaver {
     }
 
 
-    // private helper method
 
     public void scanDataIntoList() {
         try {
@@ -25,18 +23,14 @@ public class PersonSaver {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                // import all cells for a single row as an array of Strings,
-                // then convert to ints as needed
+
                 String[] peopleFromCSV = line.split(",");
 
-                // pull out the data for this cereal
                 String name = peopleFromCSV[0];
                 String password = peopleFromCSV[1];
 
-                // create Cereal object to store values
                 Person nextPerson = new Person(name, password);
 
-                // adding Cereal object to the arraylist
                 personList.add(nextPerson);
             }
             bufferedReader.close();
@@ -78,11 +72,6 @@ public class PersonSaver {
 
     }
 
-    public ArrayList getPersonList()
-    {
-        return personList;
-    }
-    
     public int findIdxOfNameInPersonList(String name)
     {
         for (int i = 0; i < personList.size(); i++)
@@ -142,10 +131,6 @@ public class PersonSaver {
     }
 
 
-    public void printWordList() {
-        System.out.println(personList.size());
-        System.out.println(personList.toString());
-    }
 }
 
 

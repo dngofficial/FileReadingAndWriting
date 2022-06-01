@@ -34,18 +34,7 @@ public class Person {
         this.password = password;
     }
 
-    public String greet() {
-        if (name.equals("") && password.equals("")) {
-            return "Hello! Please introduce yourself!";
-        }
-        else {
-            return "Name: " + name + "\n" + "Hobby: " + password;
-        }
-    }
 
-    // This method saves the Person object's state to a file
-    // (this "persisting it" so it can be loaded the next time
-    // the program is run)
     public void save() {
         try {
             File f = new File("src/person.data");

@@ -1,13 +1,7 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 
 // this class implements ActionListener interface, which allows for interactivity with JButtons
 public class PasswordGUI implements ActionListener {
@@ -101,7 +95,6 @@ public class PasswordGUI implements ActionListener {
         entryPanelPassword.add(password);
         entryPanelPassword.add(passwordEntryField);
         entryPanelPassword.add(changePasswordButton);
-//        changePasswordButton.setVisible(false);
         //middle panel
 
         feedback = new JLabel("");
@@ -133,7 +126,6 @@ public class PasswordGUI implements ActionListener {
         frame.add(p, BorderLayout.CENTER);
         frame.add(submitPanel, BorderLayout.SOUTH);
 
-//         PART 2 -- SET UP EVENT HANDLING
 //        setting up buttons to use ActionListener interface and actionPerformed method
         submit.addActionListener(this);
         newAccount.addActionListener(this);
@@ -269,7 +261,6 @@ public class PasswordGUI implements ActionListener {
         {
             if (personSaver.checkIfValidAccount(usernameEntryField.getText(), passwordEntryField.getText())) {
                 currentIDxLogIn = personSaver.findIdxOfNameInPersonList(usernameEntryField.getText());
-                System.out.println("current account idx: " + currentIDxLogIn);
                 changeToAccountEditor();
 
             } else if (!personSaver.checkIfValidAccount(usernameEntryField.getText(), passwordEntryField.getText()) && personSaver.findIdxOfNameInPersonList(usernameEntryField.getText()) != -1) {
